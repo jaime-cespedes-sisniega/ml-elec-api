@@ -34,8 +34,7 @@ def predict(data: Request) -> Dict[str, str]:
 
 
 def _make_prediction(data):
-    pred_encoded = model.predict([[*data.dict().values()]])
-    pred = model.inverse_transform_target(y_encoded=pred_encoded)[0]
+    pred = model.predict([[*data.dict().values()]])[0]
     return pred
 
 
