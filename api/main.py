@@ -4,7 +4,7 @@ from typing import Dict
 
 from api.config import Settings
 from api.data_models import Request, Response
-from api.utils import load_model
+from api.utils import load_model, make_prediction
 from fastapi import FastAPI
 
 
@@ -29,15 +29,11 @@ def predict(data: Request) -> Dict[str, str]:
     :rtype: Dict[str: str]
     """
     timestamp = datetime.today().isoformat()
-    pred = _make_prediction(data)
+    pred = make_prediction(model=model,
+                           data=data)
     response = {'timestamp': timestamp,
                 'class_pred': pred}
     return response
-
-
-def _make_prediction(data):
-    pred = model.predict([[*data.dict().values()]])[0]
-    return pred
 
 
 @api.get('/health')
