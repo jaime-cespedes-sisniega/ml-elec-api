@@ -130,3 +130,6 @@ dmypy.json
 
 # .idea
 .idea/
+
+# test-result.xml
+test-result.xml
