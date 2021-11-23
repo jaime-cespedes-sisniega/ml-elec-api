@@ -1,3 +1,8 @@
+install:
+	pip install --upgrade pip &&\
+				 pip install -r requirements/requirements.txt \
+				             -r requirements/tox_requirements.txt
+
 serve-dev:
 	uvicorn api.main:api --host 0.0.0.0 --port 5000 --workers 1
 
