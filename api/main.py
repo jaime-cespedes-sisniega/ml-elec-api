@@ -11,6 +11,8 @@ from fastapi import FastAPI
 api = FastAPI()
 settings = Settings()
 
+# XXX: Model should be obtained from a model registry
+# XXX: or repo and not from the project itself
 model = load_model(path=Path(settings.model_path,
                              settings.model_file_name))
 
