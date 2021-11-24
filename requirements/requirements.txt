@@ -1,4 +1,4 @@
 fastapi==0.70.0
 uvicorn[standard]==0.15.0
 gunicorn==20.1.0
-git+https://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@github.com/jaime-cespedes-sisniega/ml-elec.git@v0.1.0
+git+https://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@github.com/jaime-cespedes-sisniega/ml-elec.git@v0.1.1
