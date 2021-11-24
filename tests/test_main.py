@@ -6,8 +6,8 @@ client = TestClient(api)
 
 data_input = {"day": 3,
               "period": 0.02,
-              "nwsprice": 0.05,
-              "nwsdemand": 0.43,
+              "nswprice": 0.05,
+              "nswdemand": 0.43,
               "vicprice": 0.003,
               "vicdemand": 0.42,
               "transfer": 0.41}
