@@ -10,8 +10,8 @@ class Request(BaseModel):
 
     day: int
     period: float
-    nwsprice: float
-    nwsdemand: float
+    nswprice: float
+    nswdemand: float
     vicprice: float
     vicdemand: float
     transfer: float
