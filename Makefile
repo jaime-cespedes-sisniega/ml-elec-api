@@ -1,4 +1,11 @@
+.ONESHELL:
+SHELL := /bin/bash
+
+VENV=.venvv
+
 install:
+	python3 -m venv $(VENV)
+	source $(VENV)/bin/activate
 	pip install --upgrade pip &&\
 				 pip install -r requirements/requirements.txt \
 				             -r requirements/tox_requirements.txt
