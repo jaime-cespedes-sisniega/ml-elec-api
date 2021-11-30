@@ -3,9 +3,12 @@ from pathlib import Path
 from typing import Dict
 
 from api.config import Settings
-from api.data_models import Request, Response
+from api.data_models import (Request,
+                             Response,
+                             request_examples,
+                             response_examples)
 from api.utils import load_model, make_prediction
-from fastapi import FastAPI
+from fastapi import Body, FastAPI
 
 
 api = FastAPI()
@@ -19,8 +22,10 @@ model = load_model(path=Path(settings.model_path,
 
 @api.post('/',
           response_model=Response,
+          responses=response_examples,
           status_code=200)
-def predict(data: Request) -> Dict[str, str]:
+def predict(data: Request = Body(...,
+                                 examples=request_examples)) -> Dict[str, str]:
     """Predict endpoint
 
     :param data: body request data

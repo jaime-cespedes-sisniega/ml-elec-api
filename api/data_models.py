@@ -17,6 +17,22 @@ class Request(BaseModel):
     transfer: float
 
 
+request_examples = {
+    "example": {
+        "summary": "Example",
+        "value": {
+            "day": 7,
+            "period": 0.978723,
+            "nswprice": 0.066651,
+            "nswdemand": 0.329366,
+            "vicprice": 0.00463,
+            "vicdemand": 0.345417,
+            "transfer": 0.206579
+        }
+    }
+}
+
+
 class Response(BaseModel):
     """Response class
 
@@ -26,3 +42,21 @@ class Response(BaseModel):
 
     timestamp: str
     class_pred: str
+
+
+response_examples = {
+    200: {
+        "description": "Success",
+        "content": {
+            "application/json": {
+                "examples": {
+                    "example": {
+                        "summary": "Example",
+                        "value": {"timestamp": "2021-11-30T08:01:32.415845",
+                                  "class_pred": "UP"}
+                    },
+                }
+            }
+        }
+    },
+}
