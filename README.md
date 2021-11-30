@@ -32,7 +32,7 @@ make run
 ```
 
 ## Request example
-The following curl command shows an example of a request send to the Docker container in which features used by the machine learning model are also send.
+The following curl command shows an example of a request sent to the Docker container in which features used by the machine learning model are also sent.
 
 ```bash
 curl --location --request POST 'http://0.0.0.0' \
