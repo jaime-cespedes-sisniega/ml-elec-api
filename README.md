@@ -1,7 +1,7 @@
 # Machine Learning API
 This repository contains the implementation of a REST API which serves a machine learning model generated in https://github.com/jaime-cespedes-sisniega/ml-elec.
 
-> **_NOTE_**: At the moment, the serialized model is included in the current API repository. This mode of operation should be replaced by obtaining the model from a model registry or a repository where models are stored.
+> **_NOTE_**: The serialized model is included in the current API repository. This mode of operation should be replaced by obtaining the model from a model registry or a repository where models are stored.
 
 ## Usage
 
