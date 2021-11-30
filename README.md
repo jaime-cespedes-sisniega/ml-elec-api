@@ -30,3 +30,28 @@ Finally, it can be run as a container.
 ```bash
 make run
 ```
+
+## Request example
+The following curl command shows an example of a request send to the Docker container in which features used by the machine learning model are also send.
+
+```bash
+curl --location --request POST 'http://0.0.0.0' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "day": 7,
+    "period": 0.978723,
+    "nswprice": 0.066651,
+    "nswdemand": 0.329366,
+    "vicprice": 0.00463,
+    "vicdemand": 0.345417,
+    "transfer": 0.206579
+}'
+```
+Request output containing a timestamp and the predicted class by the model.
+```bash
+{
+    "timestamp": "2021-11-30T08:01:32.415845",
+    "class_pred": "UP"
+}
+```
+
