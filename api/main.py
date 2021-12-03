@@ -1,4 +1,5 @@
 from datetime import datetime
+import logging
 from typing import Dict
 
 from api.config import Settings
@@ -10,6 +11,8 @@ from api.utils import make_prediction
 from fastapi import Body, FastAPI
 from ml_pipeline.registry import ModelPipelineRegistryClient
 
+
+logging.basicConfig(level=logging.INFO)
 
 api = FastAPI()
 settings = Settings()
