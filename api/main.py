@@ -1,5 +1,4 @@
 from datetime import datetime
-from pathlib import Path
 from typing import Dict
 
 from api.config import Settings
@@ -7,17 +6,18 @@ from api.data_models import (Request,
                              Response,
                              request_examples,
                              response_examples)
-from api.utils import load_model, make_prediction
+from api.utils import make_prediction
 from fastapi import Body, FastAPI
+from ml_pipeline.registry import ModelPipelineRegistryClient
 
 
 api = FastAPI()
 settings = Settings()
 
-# XXX: Model should be obtained from a model registry
-# XXX: or repo and not from the project itself
-model = load_model(path=Path(settings.model_path,
-                             settings.model_file_name))
+model_registry = ModelPipelineRegistryClient(host=settings.db_host,
+                                             port=settings.db_port,
+                                             db_name=settings.db_name)
+model = model_registry.load_pipeline(name=settings.model_name)
 
 
 @api.post('/',

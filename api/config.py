@@ -1,5 +1,3 @@
-from pathlib import Path
-
 from pydantic import BaseSettings
 
 
@@ -9,7 +7,7 @@ class Settings(BaseSettings):
     Set variables to be used by
     the API
     """
-
-    model_path: Path = Path('api',
-                            'model')
-    model_file_name: str = 'model_pipeline.joblib'
+    db_host: str = 'localhost'
+    db_port: int = 27017
+    db_name:  str = 'model_registry'
+    model_name: str = 'model_pipeline.joblib'

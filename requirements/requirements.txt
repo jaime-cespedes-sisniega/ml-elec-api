@@ -1,4 +1,4 @@
 fastapi==0.70.0
 uvicorn[standard]==0.15.0
 gunicorn==20.1.0
-git+https://github.com/jaime-cespedes-sisniega/ml-elec.git@v0.1.2
+git+https://github.com/jaime-cespedes-sisniega/ml-elec.git@feature-save-model-db
