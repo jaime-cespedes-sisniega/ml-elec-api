@@ -22,6 +22,7 @@ async def startup_model() -> None:
 
     Set the model loading it from
     the model registry
+    :rtype: None
     """
     global model
     model = load_model(settings)
