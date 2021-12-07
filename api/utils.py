@@ -1,19 +1,21 @@
-from pathlib import Path
-
+from api.config import Settings
 from api.data_models import Request
-import joblib
 from ml_pipeline.model_pipeline import ModelPipeline
+from ml_pipeline.registry import ModelPipelineRegistryClient
 
 
-def load_model(path: Path) -> ModelPipeline:
+def load_model(settings: Settings) -> ModelPipeline:
     """Load model
 
-    :param path: model pipeline location
-    :type path: Path
+    :param settings: model settings
+    :type settings: Settings
     :return: model pipeline object
     :rtype: ModelPipeline
     """
-    model = joblib.load(path)
+    model_registry = ModelPipelineRegistryClient(host=settings.db_host,
+                                                 port=settings.db_port,
+                                                 db_name=settings.db_name)
+    model = model_registry.load_pipeline(name=settings.model_name)
     return model
 
 
