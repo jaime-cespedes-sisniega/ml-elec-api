@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Dict
 
-from api.config import Settings
+from api.config import settings
 from api.data_models import (Request,
                              Response,
                              request_examples,
@@ -11,7 +11,6 @@ from fastapi import Body, FastAPI
 
 
 api = FastAPI()
-settings = Settings()
 
 model = None
 
