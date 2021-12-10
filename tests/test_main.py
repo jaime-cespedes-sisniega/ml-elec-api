@@ -22,10 +22,6 @@ data_input = {"day": 3,
               "transfer": 0.41}
 
 
-def _mock_output(return_value=None):
-    return lambda *args, **kwargs: return_value
-
-
 def test_predict_correct_output(client, mocker):
     fake_pred = 'DOWN'
     mock_make_prediction = mocker.patch('api.main.make_prediction',
