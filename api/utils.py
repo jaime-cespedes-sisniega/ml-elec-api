@@ -14,7 +14,9 @@ def load_model(settings: Settings) -> ModelPipeline:
     """
     model_registry = ModelPipelineRegistryClient(host=settings.db_host,
                                                  port=settings.db_port,
-                                                 db_name=settings.db_name)
+                                                 username=settings.db_user,
+                                                 password=settings.db_password,
+                                                 authSource=settings.db_name)
     model = model_registry.load_pipeline(name=settings.model_name)
     return model
 
