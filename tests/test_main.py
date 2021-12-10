@@ -1,16 +1,16 @@
 import pytest
 from fastapi.testclient import TestClient
-import mock
 
 
 # Patch model registry connection to avoid having a
 # database running to run the tests
-@pytest.fixture
-def client():
-    with mock.patch('api.utils.load_model'):
-        from api.main import api
-        with TestClient(api) as test_client:
-            yield test_client
+@pytest.fixture(scope='module')
+def client(module_mocker):
+    module_mocker.patch('api.config.Settings')
+    module_mocker.patch('api.utils.load_model')
+    from api.main import api
+    with TestClient(api) as test_client:
+        yield test_client
 
 
 data_input = {"day": 3,
@@ -26,14 +26,15 @@ def _mock_output(return_value=None):
     return lambda *args, **kwargs: return_value
 
 
-def test_predict_correct_output(client, monkeypatch):
+def test_predict_correct_output(client, mocker):
     fake_pred = 'DOWN'
-    monkeypatch.setattr('api.main.make_prediction',
-                        _mock_output(fake_pred))
+    mock_make_prediction = mocker.patch('api.main.make_prediction',
+                                        return_value=fake_pred)
     response = client.post('/',
                            json=data_input)
     assert response.status_code == 200
     assert response.json()['class_pred'] == fake_pred
+    assert mock_make_prediction.call_args.kwargs['data'] == data_input
 
 
 def test_predict_missing_feature(client):
