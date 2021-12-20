@@ -21,7 +21,7 @@ class DBSettings(BaseSettings):
         Set env file to read
         """
 
-        env_file = Path(__file__).parent.parent / '.env'
+        env_file = Path(__file__).parent.parent / 'env-mongodb.env'
         env_file_encoding = 'utf-8'
 
 
@@ -32,6 +32,15 @@ class ModelSettings(BaseSettings):
     """
 
     name: str = 'model_pipeline.joblib'
+
+    class Config:
+        """Config class
+
+        Set env file to read
+        """
+
+        env_file = Path(__file__).parent.parent / 'env-model.env'
+        env_file_encoding = 'utf-8'
 
 
 class Settings(BaseSettings):
