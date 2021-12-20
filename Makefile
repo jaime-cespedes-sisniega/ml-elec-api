@@ -23,4 +23,5 @@ build:
 	docker build -t ml-elec-api .
 
 run:
-	docker run -d --name ml-elec-api -p 5000:5000 -e num_workers=5 -e timeout=120 --env-file .env ml-elec-api
+	docker run -d --name ml-elec-api -p 5000:5000 -e num_workers=5 -e timeout=120 \
+	--env-file env-mongodb.env --env-file env-model.env ml-elec-api
