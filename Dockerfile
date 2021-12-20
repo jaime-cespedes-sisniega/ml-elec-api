@@ -13,5 +13,6 @@ COPY ./api /api
 
 # Default to 1 worker
 ENV num_workers 1
+ENV timeout 120
 
-CMD ["sh", "-c", "gunicorn -b 0.0.0.0:5000 -w ${num_workers} -k uvicorn.workers.UvicornWorker api.main:api"]
+CMD ["sh", "-c", "gunicorn -b 0.0.0.0:5000 -w ${num_workers} -t ${timeout} -k uvicorn.workers.UvicornWorker api.main:api"]
