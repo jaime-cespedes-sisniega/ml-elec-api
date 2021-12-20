@@ -1,9 +1,25 @@
 # Machine Learning API
 This repository contains the implementation of a REST API which serves a machine learning model generated in https://github.com/jaime-cespedes-sisniega/ml-elec.
 
-> **_NOTE_**: The serialized model is included in the current API repository. This mode of operation should be replaced by obtaining the model from a model registry or a repository where models are stored.
-
 ## Usage
+The API is intended to load a model from a models registry, in this case using MongoDB.
+
+Modify `env-mongodb.env` file to set your MongoDB configuration parameters:
+```bash
+HOST=localhost
+PORT=27017
+USERNAME_=username
+PASSWORD=password
+DATABASE=database
+```
+
+Also, `env-model.env` file has to be modified to include model´s name:
+```bash
+NAME=model.joblib
+```
+
+> **_NOTE_**: It is assumed that the model has been generated using code implemented in the https://github.com/jaime-cespedes-sisniega/ml-elec/tree/feature-save-model-db repository.
+
 
 The following command allows to create a virtualenv and install the requirements.
 ```bash
