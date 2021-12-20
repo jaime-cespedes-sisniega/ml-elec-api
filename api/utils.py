@@ -12,12 +12,13 @@ def load_model(settings: Settings) -> ModelPipeline:
     :return: model pipeline object
     :rtype: ModelPipeline
     """
-    model_registry = ModelPipelineRegistryClient(host=settings.db_host,
-                                                 port=settings.db_port,
-                                                 username=settings.db_user,
-                                                 password=settings.db_password,
-                                                 authSource=settings.db_name)
-    model = model_registry.load_pipeline(name=settings.model_name)
+    model_registry = ModelPipelineRegistryClient(
+        host=settings.db.host,
+        port=settings.db.port,
+        username=settings.db.username_,
+        password=settings.db.password,
+        authSource=settings.db.database)
+    model = model_registry.load_pipeline(name=settings.model.name)
     return model
 
 

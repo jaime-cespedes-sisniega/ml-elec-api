@@ -8,6 +8,7 @@ from api.data_models import (Request,
                              response_examples)
 from api.utils import load_model, make_prediction
 from fastapi import Body, FastAPI
+import uvicorn
 
 
 api = FastAPI()
@@ -58,3 +59,8 @@ async def health() -> Dict[str, str]:
     :rtype: Dict[str: str]
     """
     return {'Status': 'Ok!'}
+
+if __name__ == '__main__':
+    uvicorn.run(api,
+                host='0.0.0.0',
+                port=5000)

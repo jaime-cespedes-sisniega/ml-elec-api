@@ -1,19 +1,19 @@
+from pathlib import Path
+
 from pydantic import BaseSettings
 
 
-class Settings(BaseSettings):
-    """Settings class
+class DBSettings(BaseSettings):
+    """Database settings class
 
-    Set variables to be used by
-    the API
+    Set database variables to be used
     """
 
-    db_host: str
-    db_port: int
-    db_user: str
-    db_password: str
-    db_name: str
-    model_name: str
+    host: str
+    port: int
+    username_: str
+    password: str
+    database: str
 
     class Config:
         """Config class
@@ -21,5 +21,24 @@ class Settings(BaseSettings):
         Set env file to read
         """
 
-        env_file = '.env'
+        env_file = Path(__file__).parent.parent / '.env'
         env_file_encoding = 'utf-8'
+
+
+class ModelSettings(BaseSettings):
+    """Model settings class
+
+    Set models variables to be used
+    """
+
+    name: str = 'model_pipeline.joblib'
+
+
+class Settings(BaseSettings):
+    """Settings class
+
+    Set variables to be used
+    """
+
+    db: DBSettings = DBSettings()
+    model: ModelSettings = ModelSettings()
