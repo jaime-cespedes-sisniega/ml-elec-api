@@ -71,5 +71,5 @@ Request output containing a timestamp and the predicted class by the model.
 }
 ```
 
-More examples can be executed in an interactive way using http://0.0.0.0/docs.
+More examples can be executed in an interactive way using http://0.0.0.0:5000/docs.
 
