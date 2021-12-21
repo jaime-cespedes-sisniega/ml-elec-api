@@ -1,3 +1,5 @@
+import copy
+
 from fastapi.testclient import TestClient
 import pytest
 
@@ -32,7 +34,15 @@ def input_data():
 
 @pytest.fixture()
 def input_data_missing_feature(input_data):
-    input_data_missing = input_data.copy()
+    input_data_missing = copy.deepcopy(input_data)
     input_data_missing['inputs'][0].pop('period')
 
     return input_data_missing
+
+
+@pytest.fixture()
+def input_data_wrong_feature_type(input_data):
+    input_data_wrong = copy.deepcopy(input_data)
+    input_data_wrong['inputs'][0]['day'] = 'wrong_type'
+
+    return input_data_wrong

@@ -24,6 +24,15 @@ def test_predict_missing_feature(client,
                              '"msg":"field required","type":"value_error.missing"}]}')
 
 
+def test_predict_wrong_feature_type(client,
+                                    input_data_wrong_feature_type):
+    response = client.post('/api/v1/predict',
+                           json=input_data_wrong_feature_type)
+    assert response.status_code == 422
+    assert response.text == ('{"detail":[{"loc":["body","inputs",0,"day"],'
+                             '"msg":"value is not a valid integer","type":"type_error.integer"}]}')
+
+
 def test_health(client):
     response = client.get('/api/v1/health')
     assert response.status_code == 200
