@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Dict
 
+from app import schemas, __version__
 from app.config import settings
 from app.data_models import (Request,
                              Response,
@@ -27,14 +28,18 @@ async def startup_model() -> None:
     model = load_model(settings)
 
 
-@api_router.get('/health')
+@api_router.get('/health',
+                response_model=schemas.Health,
+                status_code=200)
 async def health() -> Dict[str, str]:
     """Health check function
 
     :return: Health check dict
     :rtype: Dict[str: str]
     """
-    return {'Status': 'Ok!'}
+    health_response = schemas.Health(name=settings.PROJECT_NAME,
+                                     api_version=__version__)
+    return health_response.dict()
 
 
 @api_router.post('/predict',

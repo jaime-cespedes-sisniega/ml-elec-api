@@ -1,3 +1,5 @@
+from app import __version__, schemas
+from app.config import settings
 import pytest
 from fastapi.testclient import TestClient
 
@@ -44,4 +46,5 @@ def test_predict_missing_feature(client):
 def test_health(client):
     response = client.get('/api/v1/health')
     assert response.status_code == 200
-    assert response.json() == {'Status': 'Ok!'}
+    assert response.json() == schemas.Health(name=settings.PROJECT_NAME,
+                                             api_version=__version__).dict()
