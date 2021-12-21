@@ -1,6 +1,7 @@
 from app import schemas
 from app.config import Settings
 from fastapi.encoders import jsonable_encoder
+from loguru import logger
 from ml_pipeline.model_pipeline import ModelPipeline
 from ml_pipeline.registry import ModelPipelineRegistryClient
 import numpy as np
@@ -35,7 +36,9 @@ def make_prediction(model: ModelPipeline,
     :return: class prediction
     :rtype: str
     """
+    logger.info(f'Making prediction on inputs: {input_data.inputs}')
     model_input = np.array([[*sample.values()]
                             for sample in jsonable_encoder(input_data.inputs)])
-    pred = [*model.predict(model_input)]
-    return pred
+    predictions = [*model.predict(model_input)]
+    logger.info(f"Prediction results: {predictions}")
+    return predictions
