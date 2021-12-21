@@ -54,3 +54,6 @@ class Settings(BaseSettings):
 
     DB: DBSettings = DBSettings()
     MODEL: ModelSettings = ModelSettings()
+
+
+settings = Settings()

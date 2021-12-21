@@ -14,10 +14,10 @@ tox:
 	$(VENV)/bin/tox
 
 serve-dev:
-	uvicorn api.main:api --host 0.0.0.0 --port 5000 --workers 1
+	uvicorn app.main:app --host 0.0.0.0 --port 5000 --workers 1
 
 serve-prod:
-	gunicorn -b 0.0.0.0:5000 -w 5 -k uvicorn.workers.UvicornWorker api.main:api
+	gunicorn -b 0.0.0.0:5000 -w 5 -k uvicorn.workers.UvicornWorker app.main:app
 
 build:
 	docker build -t ml-elec-api .

@@ -9,10 +9,10 @@ COPY requirements/requirements.txt .
 
 RUN pip install --upgrade -r requirements.txt --no-cache-dir
 
-COPY ./api /api
+COPY ./app /app
 
 # Default to 1 worker
 ENV num_workers 1
 ENV timeout 120
 
-CMD ["sh", "-c", "gunicorn -b 0.0.0.0:5000 -w ${num_workers} -t ${timeout} -k uvicorn.workers.UvicornWorker api.main:api"]
+CMD ["sh", "-c", "gunicorn -b 0.0.0.0:5000 -w ${num_workers} -t ${timeout} -k uvicorn.workers.UvicornWorker app.main:app"]

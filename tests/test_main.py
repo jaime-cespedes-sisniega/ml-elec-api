@@ -6,10 +6,10 @@ from fastapi.testclient import TestClient
 # database running to run the tests
 @pytest.fixture(scope='module')
 def client(module_mocker):
-    module_mocker.patch('api.config.Settings')
-    module_mocker.patch('api.utils.load_model')
-    from api.main import api
-    with TestClient(api) as test_client:
+    module_mocker.patch('app.config.Settings')
+    module_mocker.patch('app.utils.load_model')
+    from app.main import app
+    with TestClient(app) as test_client:
         yield test_client
 
 
@@ -24,9 +24,9 @@ data_input = {"day": 3,
 
 def test_predict_correct_output(client, mocker):
     fake_pred = 'DOWN'
-    mock_make_prediction = mocker.patch('api.main.make_prediction',
+    mock_make_prediction = mocker.patch('app.api.make_prediction',
                                         return_value=fake_pred)
-    response = client.post('/',
+    response = client.post('/api/v1/predict',
                            json=data_input)
     assert response.status_code == 200
     assert response.json()['class_pred'] == fake_pred
@@ -36,12 +36,12 @@ def test_predict_correct_output(client, mocker):
 def test_predict_missing_feature(client):
     data_input_missing = data_input.copy()
     data_input_missing.pop('period')
-    response = client.post('/',
+    response = client.post('/api/v1/predict',
                            json=data_input_missing)
     assert response.status_code == 422
 
 
-def test_health(client, monkeypatch):
-    response = client.get('/health')
+def test_health(client):
+    response = client.get('/api/v1/health')
     assert response.status_code == 200
     assert response.json() == {'Status': 'Ok!'}

@@ -1,5 +1,5 @@
-from api.config import Settings
-from api.data_models import Request
+from app.config import Settings
+from app.data_models import Request
 from ml_pipeline.model_pipeline import ModelPipeline
 from ml_pipeline.registry import ModelPipelineRegistryClient
 
