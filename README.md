@@ -51,7 +51,7 @@ make run
 The following curl command shows an example of a request sent to the Docker container in which features used by the machine learning model are also sent.
 
 ```bash
-curl --location --request POST 'http://0.0.0.0' \
+curl --location --request POST 'http://0.0.0.0:5000/api/v1/predict' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "day": 7,
