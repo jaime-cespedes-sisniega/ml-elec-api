@@ -31,7 +31,7 @@ class ModelSettings(BaseSettings):
     Set models variables to be used
     """
 
-    NAME: str = 'model_pipeline.joblib'
+    NAME: str
 
     class Config:
         """Config class
