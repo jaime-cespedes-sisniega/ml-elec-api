@@ -3,12 +3,8 @@ from typing import Dict
 
 from app import schemas, __version__
 from app.config import settings
-from app.data_models import (Request,
-                             Response,
-                             request_examples,
-                             response_examples)
 from app.utils import load_model, make_prediction
-from fastapi import APIRouter, Body
+from fastapi import APIRouter
 
 
 api_router = APIRouter()
@@ -43,22 +39,20 @@ async def health() -> Dict[str, str]:
 
 
 @api_router.post('/predict',
-                 response_model=Response,
-                 responses=response_examples,
+                 response_model=schemas.PredictionResponse,
                  status_code=200)
-async def predict(data: Request = Body(...,
-                                       examples=request_examples)) -> Dict[str,
-                                                                           str]:
+async def predict(input_data: schemas.MultipleDataInputs) -> Dict[str,
+                                                                  str]:
     """Predict endpoint
 
-    :param data: body request data
-    :type data: Request
+    :param input_data: body request data
+    :type input_data: Request
     :return: Predict response dict
     :rtype: Dict[str: str]
     """
     timestamp = datetime.today().isoformat()
-    pred = make_prediction(model=model,
-                           data=data)
+    predictions = make_prediction(model=model,
+                                  input_data=input_data)
     response = {'timestamp': timestamp,
-                'class_pred': pred}
+                'predictions': predictions}
     return response

@@ -1,7 +1,9 @@
+from app import schemas
 from app.config import Settings
-from app.data_models import Request
+from fastapi.encoders import jsonable_encoder
 from ml_pipeline.model_pipeline import ModelPipeline
 from ml_pipeline.registry import ModelPipelineRegistryClient
+import numpy as np
 
 
 def load_model(settings: Settings) -> ModelPipeline:
@@ -23,15 +25,17 @@ def load_model(settings: Settings) -> ModelPipeline:
 
 
 def make_prediction(model: ModelPipeline,
-                    data: Request) -> str:
+                    input_data: schemas.MultipleDataInputs) -> str:
     """Make single prediction
 
     :param model: model pipeline
     :type model: ModelPipeline
-    :param data: data input
-    :type data: Request
+    :param input_data: data input
+    :type input_data: Request
     :return: class prediction
     :rtype: str
     """
-    pred = model.predict([[*data.dict().values()]])[0]
+    model_input = np.array([[*sample.values()]
+                            for sample in jsonable_encoder(input_data.inputs)])
+    pred = [*model.predict(model_input)]
     return pred

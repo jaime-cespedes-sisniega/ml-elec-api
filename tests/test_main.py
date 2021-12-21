@@ -15,29 +15,34 @@ def client(module_mocker):
         yield test_client
 
 
-data_input = {"day": 3,
-              "period": 0.02,
-              "nswprice": 0.05,
-              "nswdemand": 0.43,
-              "vicprice": 0.003,
-              "vicdemand": 0.42,
-              "transfer": 0.41}
+input_data = {"inputs": [
+        {
+            "day": 3,
+            "period": 0.02,
+            "nswprice": 0.05,
+            "nswdemand": 0.43,
+            "vicprice": 0.003,
+            "vicdemand": 0.42,
+            "transfer": 0.41
+        }
+    ]
+}
 
 
 def test_predict_correct_output(client, mocker):
-    fake_pred = 'DOWN'
+    fake_pred = ['DOWN']
     mock_make_prediction = mocker.patch('app.api.make_prediction',
                                         return_value=fake_pred)
     response = client.post('/api/v1/predict',
-                           json=data_input)
+                           json=input_data)
     assert response.status_code == 200
-    assert response.json()['class_pred'] == fake_pred
-    assert mock_make_prediction.call_args.kwargs['data'] == data_input
+    assert response.json()['predictions'] == fake_pred
+    assert mock_make_prediction.call_args.kwargs['input_data'] == input_data
 
 
 def test_predict_missing_feature(client):
-    data_input_missing = data_input.copy()
-    data_input_missing.pop('period')
+    data_input_missing = input_data.copy()
+    data_input_missing['inputs'][0].pop('period')
     response = client.post('/api/v1/predict',
                            json=data_input_missing)
     assert response.status_code == 422
