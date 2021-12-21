@@ -7,7 +7,7 @@ from app.utils import load_model, make_prediction
 from fastapi import APIRouter
 
 
-api_router = APIRouter()
+api_router = APIRouter(tags=['API'])
 
 model = None
 
