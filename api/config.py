@@ -9,11 +9,11 @@ class DBSettings(BaseSettings):
     Set database variables to be used
     """
 
-    host: str
-    port: int
-    username_: str
-    password: str
-    database: str
+    HOST: str
+    PORT: int
+    USERNAME_: str
+    PASSWORD: str
+    DATABASE: str
 
     class Config:
         """Config class
@@ -31,7 +31,7 @@ class ModelSettings(BaseSettings):
     Set models variables to be used
     """
 
-    name: str = 'model_pipeline.joblib'
+    NAME: str = 'model_pipeline.joblib'
 
     class Config:
         """Config class
@@ -49,5 +49,7 @@ class Settings(BaseSettings):
     Set variables to be used
     """
 
-    db: DBSettings = DBSettings()
-    model: ModelSettings = ModelSettings()
+    API_V1_STR: str = '/api/v1'
+
+    DB: DBSettings = DBSettings()
+    MODEL: ModelSettings = ModelSettings()
