@@ -50,6 +50,7 @@ class Settings(BaseSettings):
     """
 
     API_V1_STR: str = '/api/v1'
+    PROJECT_NAME: str = 'Machine Learning electricity price prediction'
 
     DB: DBSettings = DBSettings()
     MODEL: ModelSettings = ModelSettings()
