@@ -3,4 +3,4 @@ uvicorn[standard]==0.15.0
 gunicorn==20.1.0
 python-dotenv==0.19.2
 loguru==0.5.3
-git+https://github.com/jaime-cespedes-sisniega/ml-elec.git@feature-save-model-db
+git+https://github.com/jaime-cespedes-sisniega/ml-elec.git@v1.0.0
