@@ -40,12 +40,6 @@ def _set_collector_registry():
         registry = REGISTRY
     return registry
 
-# def _set_collector_registry():
-#     registry = CollectorRegistry()
-#     multiprocess.MultiProcessCollector(registry,
-#                                        path=settings.MONITORING.PROMETHEUS_MULTIPROC_DIR)
-#     return registry
-
 
 def _set_collectors(registry):
     histograms_features = {}
