@@ -11,14 +11,18 @@ WORKDIR /src
 
 COPY requirements/requirements.txt .
 
-RUN pip install --upgrade -r requirements.txt --no-cache-dir
+RUN pip install --upgrade -r requirements.txt --no-cache-dir && \
+    rm requirements.txt && \
+    mkdir .multiproc && \
+    chown api-user: .multiproc
 
 COPY ./app app/
 
-# Default to 1 worker
-ENV num_workers 1
-ENV timeout 120
-
 USER api-user
 
-CMD ["sh", "-c", "gunicorn -b 0.0.0.0:5000 -w ${num_workers} -t ${timeout} -k uvicorn.workers.UvicornWorker app.main:app"]
+# Default env variables
+ENV NUM_WORKERS 1
+ENV TIMEOUT 120
+ENV PROMETHEUS_MULTIPROC_DIR ".multiproc"
+
+CMD ["sh", "-c", "gunicorn -b 0.0.0.0:5000 -w ${NUM_WORKERS} -t ${TIMEOUT} -k uvicorn.workers.UvicornWorker app.main:app"]

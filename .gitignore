@@ -133,3 +133,6 @@ dmypy.json
 
 # test-result.xml
 test-result.xml
+
+# prometheus multiproc
+.multiproc
