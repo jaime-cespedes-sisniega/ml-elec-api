@@ -42,23 +42,24 @@ def _set_collector_registry():
 
 
 def _set_collectors(registry):
-    histograms_features = {}
+    histogram_features = {}
     for feature, field in DataInput.__dict__['__fields__'].items():
         if field.type_ in [int, float]:
-            histograms_features[feature] = Histogram(
+            histogram_features[feature] = Histogram(
                 f'{feature}_distribution',
                 f'Distribution of feature {feature}',
                 registry=registry)
-    counters_predictions = {
-        'DOWN': Counter('model_prediction_down',
-                        'Number of times DOWN label has been predicted.',
-                        registry=registry),
-        'UP': Counter('model_prediction_up',
-                      'Number of times UP label has been predicted.',
-                      registry=registry)}
 
-    return histograms_features, counters_predictions
+    counter_predictions = Counter(
+        'model_prediction',
+        'Number of times a certain label has been predicted',
+        ['class'],
+        registry=registry)
+    counter_predictions.labels('DOWN')
+    counter_predictions.labels('UP')
+
+    return histogram_features, counter_predictions
 
 
 registry = _set_collector_registry()
-histograms_features, counters_predictions = _set_collectors(registry=registry)
+histogram_features, counter_predictions = _set_collectors(registry=registry)

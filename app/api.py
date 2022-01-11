@@ -4,8 +4,8 @@ from typing import Dict
 
 from app import schemas, __version__
 from app.config import settings
-from app.metrics import (counters_predictions,
-                         histograms_features)
+from app.metrics import (counter_predictions,
+                         histogram_features)
 from app.utils import load_model, make_prediction
 from fastapi import APIRouter
 
@@ -41,12 +41,6 @@ async def health() -> Dict[str, str]:
     return health_response.dict()
 
 
-class LabelError(Exception):
-    """Label error exception"""
-
-    pass
-
-
 @api_router.post('/predict',
                  response_model=schemas.PredictionResponse,
                  status_code=200)
@@ -67,12 +61,9 @@ async def predict(input_data: schemas.MultipleDataInputs) -> Dict[str,
 
     for input_ in input_data.inputs:
         for feature, value in input_.dict().items():
-            histograms_features[feature].observe(value)
+            histogram_features[feature].observe(value)
 
     for label, value in Counter(predictions).items():
-        try:
-            counters_predictions[label].inc(value)
-        except KeyError:
-            raise LabelError(f'label {label} not existing')
+        counter_predictions.labels(label).inc(value)
 
     return response
