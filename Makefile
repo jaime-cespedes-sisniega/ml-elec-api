@@ -21,7 +21,7 @@ serve-dev:
 serve-prod:
 	mkdir .multiproc
 	export PROMETHEUS_MULTIPROC_DIR="${CURDIR}/.multiproc/"
-	gunicorn -b 0.0.0.0:5000 -w 5 -k uvicorn.workers.UvicornWorker app.main:app
+	gunicorn -b 0.0.0.0:5000 -w 5 -t 120 -c gunicorn_conf.py -k uvicorn.workers.UvicornWorker app.main:app
 
 build:
 	docker build -t ml-elec-api .
