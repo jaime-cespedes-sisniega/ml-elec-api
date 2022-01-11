@@ -1,12 +1,11 @@
-from collections import Counter
 from datetime import datetime
 from typing import Dict
 
 from app import schemas, __version__
 from app.config import settings
-from app.metrics import (counter_predictions,
-                         histogram_features)
-from app.utils import load_model, make_prediction
+from app.utils import (load_model,
+                       log_metrics,
+                       make_prediction)
 from fastapi import APIRouter
 
 
@@ -59,11 +58,7 @@ async def predict(input_data: schemas.MultipleDataInputs) -> Dict[str,
     response = {'timestamp': timestamp,
                 'predictions': predictions}
 
-    for input_ in input_data.inputs:
-        for feature, value in input_.dict().items():
-            histogram_features[feature].observe(value)
-
-    for label, value in Counter(predictions).items():
-        counter_predictions.labels(label).inc(value)
+    log_metrics(input_data=input_data,
+                predictions=predictions)
 
     return response
