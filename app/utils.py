@@ -1,4 +1,5 @@
 from collections import Counter
+import os
 from typing import List
 
 from app import schemas
@@ -9,7 +10,7 @@ from app.schemas import MultipleDataInputs
 from fastapi.encoders import jsonable_encoder
 from loguru import logger
 from ml_pipeline.model_pipeline import ModelPipeline
-from ml_pipeline.registry import ModelPipelineRegistryClient
+import mlflow
 import numpy as np
 
 
@@ -21,13 +22,15 @@ def load_model(settings: Settings) -> ModelPipeline:
     :return: model pipeline object
     :rtype: ModelPipeline
     """
-    model_registry = ModelPipelineRegistryClient(
-        host=settings.DB.HOST,
-        port=settings.DB.PORT,
-        username=settings.DB.USERNAME_,
-        password=settings.DB.PASSWORD,
-        authSource=settings.DB.DATABASE)
-    model = model_registry.load_pipeline(name=settings.MODEL.NAME)
+    mlflow.set_tracking_uri(f'http://{settings.MODEL_REGISTRY.HOST}'
+                            f':{settings.MODEL_REGISTRY.PORT}')
+    os.environ['MLFLOW_TRACKING_USERNAME'] = settings.MODEL_REGISTRY.USERNAME_
+    os.environ['MLFLOW_TRACKING_PASSWORD'] = settings.MODEL_REGISTRY.PASSWORD
+
+    model = mlflow.sklearn.load_model(
+        model_uri=f"models:/{settings.MODEL_REGISTRY.MODEL_NAME}/None",
+    )
+
     return model
 
 

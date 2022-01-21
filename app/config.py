@@ -8,17 +8,17 @@ from loguru import logger
 from pydantic import BaseSettings
 
 
-class DBSettings(BaseSettings):
-    """Database settings class
+class ModelRegistrySettings(BaseSettings):
+    """Model registry settings class
 
-    Set database variables to be used
+    Set model registry variables to be used
     """
 
     HOST: str
     PORT: int
     USERNAME_: str
     PASSWORD: str
-    DATABASE: str
+    MODEL_NAME: str
 
     class Config:
         """Config class
@@ -26,25 +26,7 @@ class DBSettings(BaseSettings):
         Set env file to read
         """
 
-        env_file = Path(__file__).parent.parent / 'env-mongodb.env'
-        env_file_encoding = 'utf-8'
-
-
-class ModelSettings(BaseSettings):
-    """Model settings class
-
-    Set models variables to be used
-    """
-
-    NAME: str
-
-    class Config:
-        """Config class
-
-        Set env file to read
-        """
-
-        env_file = Path(__file__).parent.parent / 'env-model.env'
+        env_file = Path(__file__).parent.parent / '.env'
         env_file_encoding = 'utf-8'
 
 
@@ -67,8 +49,7 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = 'Machine Learning electricity price prediction'
 
     LOGGING: LoggingSettings = LoggingSettings()
-    DB: DBSettings = DBSettings()
-    MODEL: ModelSettings = ModelSettings()
+    MODEL_REGISTRY: ModelRegistrySettings = ModelRegistrySettings()
 
 
 # See: https://loguru.readthedocs.io/en/stable/overview.html#entirely-compatible-with-standard-logging  # noqa
