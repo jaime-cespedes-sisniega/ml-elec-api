@@ -9,18 +9,18 @@ from app.metrics import (counter_predictions,
 from app.schemas import MultipleDataInputs
 from fastapi.encoders import jsonable_encoder
 from loguru import logger
-from ml_pipeline.model_pipeline import ModelPipeline
 import mlflow
 import numpy as np
+import sklearn.pipeline
 
 
-def load_model(settings: Settings) -> ModelPipeline:
+def load_model(settings: Settings) -> sklearn.pipeline.Pipeline:
     """Load model
 
     :param settings: model settings
     :type settings: Settings
     :return: model pipeline object
-    :rtype: ModelPipeline
+    :rtype: sklearn.pipeline.Pipeline
     """
     mlflow.set_tracking_uri(f'http://{settings.MODEL_REGISTRY.HOST}'
                             f':{settings.MODEL_REGISTRY.PORT}')
@@ -34,12 +34,12 @@ def load_model(settings: Settings) -> ModelPipeline:
     return model
 
 
-def make_prediction(model: ModelPipeline,
+def make_prediction(model: sklearn.pipeline.Pipeline,
                     input_data: schemas.MultipleDataInputs) -> str:
     """Make single prediction
 
     :param model: model pipeline
-    :type model: ModelPipeline
+    :type model: sklearn.pipeline.Pipeline
     :param input_data: data input
     :type input_data: Request
     :return: class prediction
