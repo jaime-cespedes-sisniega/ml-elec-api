@@ -1,25 +1,19 @@
 # Machine Learning API
-This repository contains the implementation of a REST API which serves a machine learning model generated in https://github.com/jaime-cespedes-sisniega/ml-elec.
+This repository contains the implementation of a REST API which serves a machine learning model generated in https://github.com/jaime-cespedes-sisniega/ml-elec and stored in MLflow´s Model Registry.
 
 ## Usage
-The API is intended to load a model from a models registry, in this case using MongoDB.
+The API is intended to load a model from a models registry, in this case using MLflow´s Model Registry.
 
-Modify `env-mongodb.env` file to set your MongoDB configuration parameters:
+Modify `.env` file to set your models' registry configuration parameters:
 ```bash
 HOST=localhost
-PORT=27017
+PORT=80
 USERNAME_=username
 PASSWORD=password
-DATABASE=database
+MODEL_NAME=model_name
+# FIXME: Workaround to include MLFLOW_SFTP_HOST
+MLFLOW_SFTP_HOST=sftp_host
 ```
-
-Also, `env-model.env` file has to be modified to include model´s name:
-```bash
-NAME=model.joblib
-```
-
-> **_NOTE_**: It is assumed that the model has been generated using code implemented in the https://github.com/jaime-cespedes-sisniega/ml-elec/tree/feature-save-model-db repository.
-
 
 The following command allows to create a virtualenv and install the requirements.
 ```bash
@@ -77,5 +71,5 @@ Request output containing a timestamp and the predicted class by the model.
 }
 ```
 
-More examples can be executed in an interactive way using http://0.0.0.0:5000/docs.
+More examples can be executed in an interactive way using http://0.0.0.0:5000/api/v1/docs.
 

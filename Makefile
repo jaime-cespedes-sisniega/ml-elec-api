@@ -27,5 +27,5 @@ build:
 	docker build -t ml-elec-api .
 
 run:
-	docker run -d --name ml-elec-api -p 5000:5000 -e NUM_WORKERS=5 -e TIMEOUT=120 \
-	--env-file env-mongodb.env --env-file env-model.env ml-elec-api
+	docker run -d --name ml-elec-api-mlflow -p 5000:5000 -v ~/.ssh/id_rsa:/home/api-user/.ssh/id_rsa:ro -e NUM_WORKERS=5 -e TIMEOUT=120\
+ 	-env-file .env ml-elec-api-mlflow
