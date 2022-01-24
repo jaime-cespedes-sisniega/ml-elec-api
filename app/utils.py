@@ -22,10 +22,17 @@ def load_model(settings: Settings) -> sklearn.pipeline.Pipeline:
     :return: model pipeline object
     :rtype: sklearn.pipeline.Pipeline
     """
-    mlflow.set_tracking_uri(f'http://{settings.MODEL_REGISTRY.HOST}'
-                            f':{settings.MODEL_REGISTRY.PORT}')
-    os.environ['MLFLOW_TRACKING_USERNAME'] = settings.MODEL_REGISTRY.USERNAME_
-    os.environ['MLFLOW_TRACKING_PASSWORD'] = settings.MODEL_REGISTRY.PASSWORD
+    mlflow.set_tracking_uri(f'http://{settings.MODEL_REGISTRY.MLFLOW_HOST}'
+                            f':{settings.MODEL_REGISTRY.MLFLOW_PORT}')
+    os.environ['MLFLOW_TRACKING_USERNAME'] = \
+        settings.MODEL_REGISTRY.MLFLOW_USERNAME
+    os.environ['MLFLOW_TRACKING_PASSWORD'] = \
+        settings.MODEL_REGISTRY.MLFLOW_PASSWORD
+    os.environ['MLFLOW_S3_ENDPOINT_URL'] = \
+        f'http://{settings.MODEL_REGISTRY.MINIO_HOST}' \
+        f':{settings.MODEL_REGISTRY.MINIO_PORT}'
+    os.environ['AWS_ACCESS_KEY_ID'] = settings.MODEL_REGISTRY.MINIO_USERNAME
+    os.environ['AWS_SECRET_ACCESS_KEY'] = settings.MODEL_REGISTRY.MINIO_PASSWORD
 
     model = mlflow.sklearn.load_model(
         model_uri=f"models:/{settings.MODEL_REGISTRY.MODEL_NAME}/None",

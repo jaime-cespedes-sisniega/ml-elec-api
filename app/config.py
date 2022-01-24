@@ -14,11 +14,15 @@ class ModelRegistrySettings(BaseSettings):
     Set model registry variables to be used
     """
 
-    HOST: str
-    PORT: int
-    USERNAME_: str
-    PASSWORD: str
+    MLFLOW_HOST: str
+    MLFLOW_PORT: int
+    MLFLOW_USERNAME: str
+    MLFLOW_PASSWORD: str
     MODEL_NAME: str
+    MINIO_HOST: str
+    MINIO_PORT: str
+    MINIO_USERNAME: str
+    MINIO_PASSWORD: str
 
     class Config:
         """Config class
