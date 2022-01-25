@@ -2,17 +2,19 @@
 This repository contains the implementation of a REST API which serves a machine learning model generated in https://github.com/jaime-cespedes-sisniega/ml-elec and stored in MLflow´s Model Registry.
 
 ## Usage
-The API is intended to load a model from a models registry, in this case using MLflow´s Model Registry.
+The API is intended to load a model from a models registry, in this case using MLflow´s Model Registry and MinIO as artifacts storage.
 
 Modify `.env` file to set your models' registry configuration parameters:
 ```bash
-HOST=localhost
-PORT=80
-USERNAME_=username
-PASSWORD=password
+MLFLOW_HOST=localhost
+MLFLOW_PORT=80
+MLFLOW_USERNAME=username
+MLFLOW_PASSWORD=password
 MODEL_NAME=model_name
-# FIXME: Workaround to include MLFLOW_SFTP_HOST
-MLFLOW_SFTP_HOST=sftp_host
+MINIO_HOST=localhost
+MINIO_PORT=9000
+MINIO_USERNAME=username
+MINIO_PASSWORD=password
 ```
 
 The following command allows to create a virtualenv and install the requirements.
