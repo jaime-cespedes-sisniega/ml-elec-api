@@ -24,15 +24,6 @@ class ModelRegistrySettings(BaseSettings):
     MINIO_USERNAME: str
     MINIO_PASSWORD: str
 
-    class Config:
-        """Config class
-
-        Set env file to read
-        """
-
-        env_file = Path(__file__).parent.parent / '.env'
-        env_file_encoding = 'utf-8'
-
 
 class LoggingSettings(BaseSettings):
     """Logging settings class
@@ -41,6 +32,17 @@ class LoggingSettings(BaseSettings):
     """
 
     LEVEL: int = logging.INFO
+
+
+class DriftDetectorSettings(BaseSettings):
+    """Drift detector settings class
+
+    Set drift detector variables to be used
+    """
+
+    SERVICE_HOST: str
+    SERVICE_PORT: int
+    DETECTOR_FILE_NAME: str
 
 
 class Settings(BaseSettings):
@@ -53,7 +55,19 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = 'Machine Learning electricity price prediction'
 
     LOGGING: LoggingSettings = LoggingSettings()
-    MODEL_REGISTRY: ModelRegistrySettings = ModelRegistrySettings()
+    MODEL_REGISTRY: ModelRegistrySettings
+    DRIFT_DETECTOR: DriftDetectorSettings
+
+    class Config:
+        """Config class
+
+        Set env file to read
+        """
+
+        env_file = Path(__file__).parent.parent / '.env'
+        env_file_encoding = 'utf-8'
+        env_nested_delimiter = '__'
+        case_sensitive = True
 
 
 # See: https://loguru.readthedocs.io/en/stable/overview.html#entirely-compatible-with-standard-logging  # noqa

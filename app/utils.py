@@ -1,9 +1,13 @@
 from collections import Counter
 import os
-from typing import List
+from typing import (Dict,
+                    List,
+                    Union)
 
+import aiohttp
 from app import schemas
-from app.config import Settings
+from app.config import (DriftDetectorSettings,
+                        ModelRegistrySettings)
 from app.metrics import (counter_predictions,
                          histogram_features)
 from app.schemas import MultipleDataInputs
@@ -14,35 +18,32 @@ import numpy as np
 import sklearn.pipeline
 
 
-def load_model(settings: Settings) -> sklearn.pipeline.Pipeline:
+def load_model(settings: ModelRegistrySettings) -> sklearn.pipeline.Pipeline:
     """Load model
 
     :param settings: model settings
-    :type settings: Settings
+    :type settings: ModelRegistrySettings
     :return: model pipeline object
     :rtype: sklearn.pipeline.Pipeline
     """
-    mlflow.set_tracking_uri(f'http://{settings.MODEL_REGISTRY.MLFLOW_HOST}'
-                            f':{settings.MODEL_REGISTRY.MLFLOW_PORT}')
-    os.environ['MLFLOW_TRACKING_USERNAME'] = \
-        settings.MODEL_REGISTRY.MLFLOW_USERNAME
-    os.environ['MLFLOW_TRACKING_PASSWORD'] = \
-        settings.MODEL_REGISTRY.MLFLOW_PASSWORD
-    os.environ['MLFLOW_S3_ENDPOINT_URL'] = \
-        f'http://{settings.MODEL_REGISTRY.MINIO_HOST}' \
-        f':{settings.MODEL_REGISTRY.MINIO_PORT}'
-    os.environ['AWS_ACCESS_KEY_ID'] = settings.MODEL_REGISTRY.MINIO_USERNAME
-    os.environ['AWS_SECRET_ACCESS_KEY'] = settings.MODEL_REGISTRY.MINIO_PASSWORD
+    mlflow.set_tracking_uri(f'http://{settings.MLFLOW_HOST}'
+                            f':{settings.MLFLOW_PORT}')
+    os.environ['MLFLOW_TRACKING_USERNAME'] = settings.MLFLOW_USERNAME
+    os.environ['MLFLOW_TRACKING_PASSWORD'] = settings.MLFLOW_PASSWORD
+    os.environ['MLFLOW_S3_ENDPOINT_URL'] = f'http://{settings.MINIO_HOST}' \
+                                           f':{settings.MINIO_PORT}'
+    os.environ['AWS_ACCESS_KEY_ID'] = settings.MINIO_USERNAME
+    os.environ['AWS_SECRET_ACCESS_KEY'] = settings.MINIO_PASSWORD
 
     model = mlflow.sklearn.load_model(
-        model_uri=f"models:/{settings.MODEL_REGISTRY.MODEL_NAME}/None",
+        model_uri=f"models:/{settings.MODEL_NAME}/None",
     )
 
     return model
 
 
-def make_prediction(model: sklearn.pipeline.Pipeline,
-                    input_data: schemas.MultipleDataInputs) -> str:
+def make_model_prediction(model: sklearn.pipeline.Pipeline,
+                          input_data: schemas.MultipleDataInputs) -> str:
     """Make single prediction
 
     :param model: model pipeline
@@ -76,3 +77,31 @@ def log_metrics(input_data: List[MultipleDataInputs],
 
     for label, value in Counter(predictions).items():
         counter_predictions.labels(label).inc(value)
+
+
+async def check_drift(settings: DriftDetectorSettings,
+                      input_data: schemas.MultipleDataInputs) \
+        -> List[Dict[str, Union[None, str, int, float]]]:
+    """Check drift by requesting drift service
+
+    :param settings: input data to log
+    :type settings: DriftDetectorSettings
+    :param input_data: input data to check drift
+    :type input_data: List[str]
+    :return drift service response
+    :rtype: List[Dict[str, Union[None, str, int, float]]]
+    """
+    logger.info(f'Checking drift on inputs: {input_data.inputs}')
+    drift_responses = []
+    for input_data_sample in input_data.inputs:
+        async with aiohttp.ClientSession() as session:
+            url = f'http://{settings.SERVICE_HOST}:' \
+                  f'{settings.SERVICE_PORT}/drift'
+            payload = {
+                'values': [*input_data_sample.dict().values()]
+            }
+            async with session.post(url=url,
+                                    json=payload) as resp:
+                response = await resp.json()
+        drift_responses.append(response)
+    return drift_responses

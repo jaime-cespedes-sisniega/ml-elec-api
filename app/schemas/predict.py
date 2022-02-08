@@ -1,4 +1,7 @@
-from typing import List
+from typing import (Dict,
+                    List,
+                    Optional,
+                    Union)
 
 from pydantic import BaseModel
 
@@ -53,13 +56,29 @@ class PredictionResponse(BaseModel):
 
     timestamp: str
     predictions: List[str]
+    drift: Optional[List[Dict[str, Union[None, str, int, float]]]]
 
     class Config:
         """Prediction response class config"""
 
         schema_extra = {
-            'example': {
+            'example_simple': {
                 "timestamp": "2021-11-30T08:01:32.415845",
                 "predictions": ["UP"]
+            },
+            'example_drift': {
+                "timestamp": "2021-11-30T08:01:32.415845",
+                "predictions": ["UP"],
+                "drift": [
+                    {
+                        "is_drift": 0,
+                        "distance": None,
+                        "p_val": None,
+                        "threshold": 0.1223146794323716,
+                        "time": 2,
+                        "ert": 96,
+                        "test_stat": 0.04989946412069335
+                    }
+                ]
             }
         }
