@@ -4,17 +4,27 @@ This repository contains the implementation of a REST API which serves a machine
 ## Usage
 The API is intended to load a model from a models registry, in this case using MLflow´s Model Registry and MinIO as artifacts storage.
 
+Rename `.env.example` to `.env`.
+
+```bash
+mv .env.example .env
+```
+
 Modify `.env` file to set your models' registry configuration parameters:
 ```bash
-MLFLOW_HOST=localhost
-MLFLOW_PORT=80
-MLFLOW_USERNAME=username
-MLFLOW_PASSWORD=password
-MODEL_NAME=model_name
-MINIO_HOST=localhost
-MINIO_PORT=9000
-MINIO_USERNAME=username
-MINIO_PASSWORD=password
+MODEL_REGISTRY__MLFLOW_HOST=mlflow_host
+MODEL_REGISTRY__MLFLOW_PORT=80
+MODEL_REGISTRY__MLFLOW_USERNAME=username
+MODEL_REGISTRY__MLFLOW_PASSWORD=password
+MODEL_REGISTRY__MODEL_NAME=model_name
+MODEL_REGISTRY__MINIO_HOST=minio_host
+MODEL_REGISTRY__MINIO_PORT=9000
+MODEL_REGISTRY__MINIO_USERNAME=username
+MODEL_REGISTRY__MINIO_PASSWORD=password
+
+DRIFT_DETECTOR__SERVICE_HOST=service_host
+DRIFT_DETECTOR__SERVICE_PORT=5001
+DRIFT_DETECTOR__DETECTOR_FILE_NAME=detector_name
 ```
 
 The following command allows to create a virtualenv and install the requirements.
