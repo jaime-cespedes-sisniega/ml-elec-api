@@ -109,8 +109,6 @@ async def predict(input_data: schemas.MultipleDataInputs) -> Dict[str,
     drift = await check_drift(settings=settings.DRIFT_DETECTOR,
                               input_data=input_data)
 
-    logger.info(f'Drift check: {drift}')
-
     response = {'timestamp': timestamp,
                 'predictions': predictions,
                 'drift': drift}

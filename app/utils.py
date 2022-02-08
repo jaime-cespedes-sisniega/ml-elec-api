@@ -104,4 +104,5 @@ async def check_drift(settings: DriftDetectorSettings,
                                     json=payload) as resp:
                 response = await resp.json()
         drift_responses.append(response)
+    logger.info(f"Drift results: {drift_responses}")
     return drift_responses
