@@ -93,10 +93,10 @@ async def check_drift(settings: DriftDetectorSettings,
     """
     logger.info(f'Checking drift on inputs: {input_data.inputs}')
     drift_responses = []
+    url = f'http://{settings.SERVICE_HOST}:' \
+          f'{settings.SERVICE_PORT}/drift'
     for input_data_sample in input_data.inputs:
         async with aiohttp.ClientSession() as session:
-            url = f'http://{settings.SERVICE_HOST}:' \
-                  f'{settings.SERVICE_PORT}/drift'
             payload = {
                 'values': [*input_data_sample.dict().values()]
             }
